@@ -12,6 +12,7 @@ const SearchSection = ({ onSearchInput }: any) => {
 				<div className='flex gap-2 items-center p-2 border rounded-md bg-white my-5 w-[50%]'>
 					<Search className='text-primary' />
 					<input
+						name='search'
 						type='text'
 						placeholder='Search'
 						className='bg-transparent w-full outline-none'

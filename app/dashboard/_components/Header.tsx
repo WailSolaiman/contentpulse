@@ -7,6 +7,7 @@ const Header = () => {
 			<div className='flex gap-2 items-center p-2 border rounded-md w-6/12 bg-white'>
 				<Search />
 				<input
+					name='search'
 					type='text'
 					placeholder='Search...'
 					className='outline-none'

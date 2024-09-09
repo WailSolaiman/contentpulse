@@ -1,6 +1,7 @@
 import React from 'react'
 import SideNav from './_components/SideNav'
 import Header from './_components/Header'
+import { Toaster } from '@/components/ui/toaster'
 
 const DashboardLayout = ({
 	children,
@@ -13,6 +14,7 @@ const DashboardLayout = ({
 			<div className='md:ml-64'>
 				<Header />
 				{children}
+				<Toaster />
 			</div>
 		</div>
 	)

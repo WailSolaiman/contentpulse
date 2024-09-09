@@ -38,15 +38,22 @@ const CreateNewContent = (props: PROPS) => {
 		setAiOutput(result?.response.text())
 		await saveInDB(
 			formData,
+			selectedTemplate?.name,
 			selectedTemplate?.slug,
 			result?.response.text()
 		)
 		setLoading(false)
 	}
 
-	const saveInDB = async (formData: any, slug: any, aiOutput: string) => {
+	const saveInDB = async (
+		formData: any,
+		name: any,
+		slug: any,
+		aiOutput: string
+	) => {
 		const result = await db.insert(AiOutput).values({
 			formData: formData,
+			templateName: name,
 			templateSlug: slug,
 			aiResponse: aiOutput,
 			createdBy: user?.primaryEmailAddress?.emailAddress,

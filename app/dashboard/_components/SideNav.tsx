@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { FileClock, Home, Settings, WalletCards } from 'lucide-react'
+import Link from 'next/link'
 
 const SideNav = () => {
 	const MenuList = [
@@ -49,15 +50,15 @@ const SideNav = () => {
 			<hr className='my-6 border' />
 			<div className='mt-3'>
 				{MenuList.map((menu, index) => (
-					<div
-						className={`flex gap-2 mb-2 p-3 
-                        hover:bg-primary hover:text-white 
-                        rounded-lg cursor-pointer items-center
-                        ${path === menu.path && 'bg-primary text-white'}`}
-						key={index}>
-						<menu.icon />
-						<h2>{menu.name}</h2>
-					</div>
+					<Link href={menu.path} key={index}>
+						<div
+							className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-white 
+								rounded-lg cursor-pointer items-center
+                        ${path === menu.path && 'bg-primary text-white'}`}>
+							<menu.icon />
+							<h2>{menu.name}</h2>
+						</div>
+					</Link>
 				))}
 			</div>
 		</div>

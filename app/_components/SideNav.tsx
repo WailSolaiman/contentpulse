@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { FileClock, Home, Settings, WalletCards } from 'lucide-react'
 import Link from 'next/link'
+import UsageTrack from './UsageTrack'
 
 const SideNav = () => {
 	const MenuList = [
@@ -16,17 +17,17 @@ const SideNav = () => {
 		{
 			name: 'History',
 			icon: FileClock,
-			path: '/dashboard/history',
+			path: '/history',
 		},
 		{
 			name: 'Billing',
 			icon: WalletCards,
-			path: '/dashboard/billing',
+			path: '/billing',
 		},
 		{
 			name: 'Settings',
 			icon: Settings,
-			path: '/dashboard/settings',
+			path: '/settings',
 		},
 	]
 
@@ -37,7 +38,7 @@ const SideNav = () => {
 	}, [])
 
 	return (
-		<div className='h-screen p-5 shadow-sm border bg-white'>
+		<div className='h-screen relative p-5 shadow-sm border bg-white'>
 			<div className='flex justify-center'>
 				<Image
 					src={'/logo.svg'}
@@ -53,13 +54,18 @@ const SideNav = () => {
 					<Link href={menu.path} key={index}>
 						<div
 							className={`flex gap-2 mb-2 p-3 hover:bg-primary hover:text-white 
-								rounded-lg cursor-pointer items-center
-                        ${path === menu.path && 'bg-primary text-white'}`}>
+								rounded-lg cursor-pointer items-center ${
+									path === menu.path &&
+									'bg-primary text-white'
+								}`}>
 							<menu.icon />
 							<h2>{menu.name}</h2>
 						</div>
 					</Link>
 				))}
+			</div>
+			<div className='absolute bottom-10 left-0 w-full'>
+				<UsageTrack />
 			</div>
 		</div>
 	)

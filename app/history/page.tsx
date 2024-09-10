@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table'
 import { useToast } from '@/hooks/use-toast'
 
-interface HistoryData {
+export interface HistoryData {
 	id: number
 	templateSlug: string
 	templateName: string
@@ -36,6 +36,18 @@ const History = () => {
 		setHistory(allData)
 	}
 
+	/* 	const countWords = (text: string): number => {
+		if (text.length === 0) {
+			return 0
+		} else {
+			text = text.replace(/(^\s*)|(\s*$)/gi, '')
+			text = text.replace(/[ ]{2,}/gi, ' ')
+			text = text.replace(/\n /, '\n')
+			text = text.replace(/[#!*`_~>\-\+\[\]\(\)\\]/g, '')
+			return text.split(/\s+/).filter((word) => word.length > 0).length
+		}
+	} */
+
 	return (
 		<div className='m-10 p-10 bg-white border rounded-lg shadow-sm'>
 			<h2 className='text-3xl font-bold mb-2'>History</h2>
@@ -46,25 +58,31 @@ const History = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead>Template</TableHead>
-							<TableHead>AI RESP</TableHead>
-							<TableHead>DATE</TableHead>
-							<TableHead>Words</TableHead>
-							<TableHead className='text-right'>Copy</TableHead>
+							<TableHead className='text-center'>
+								Template/Tool
+							</TableHead>
+							<TableHead className='text-center'>
+								AI Response
+							</TableHead>
+							<TableHead className='text-center'>
+								Created
+							</TableHead>
+							<TableHead className='text-center'>Copy</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{history.map((item) => (
 							<TableRow key={item.id}>
-								<TableCell className='font-medium'>
+								<TableCell className='font-medium text-center'>
 									{item.templateName}
 								</TableCell>
-								<TableCell>
+								<TableCell className='text-center'>
 									{item.aiResponse?.substring(0, 50)}
 								</TableCell>
-								<TableCell>{item.createdAt}</TableCell>
-								<TableCell>0</TableCell>
-								<TableCell className='text-right'>
+								<TableCell className='text-center'>
+									{item.createdAt}
+								</TableCell>
+								<TableCell className='text-center'>
 									<button
 										className='text-primary font-bold'
 										type='button'

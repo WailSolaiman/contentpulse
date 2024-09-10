@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { chatSession } from '@/utils/AiModal'
@@ -13,6 +13,8 @@ import { db } from '@/utils/db'
 import { AiOutput } from '@/utils/schema'
 import { useUser } from '@clerk/nextjs'
 import moment from 'moment'
+import { TotalUsageContext } from '@/app/(context)/TotalUsageContext'
+import { useRouter } from 'next/router'
 
 interface PROPS {
 	params: {
@@ -25,12 +27,19 @@ const CreateNewContent = (props: PROPS) => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [aiOutput, setAiOutput] = useState<string>('')
 	const { user } = useUser()
+	const router = useRouter()
+	const { totalUsage, setTotalUsage } = useContext(TotalUsageContext)
 
 	const selectedTemplate: TEMPLATE | undefined = Templates.find(
 		(item) => item.slug == props.params['template-slug']
 	)
 
 	const generateAIContent = async (formData: any) => {
+		if (totalUsage >= 10000) {
+			router.push('/billing')
+			return
+		}
+
 		setLoading(true)
 		const selectedPrompt = selectedTemplate?.aiPrompt
 		const finalPrompt = JSON.stringify(formData) + ', ' + selectedPrompt

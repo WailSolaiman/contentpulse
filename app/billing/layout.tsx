@@ -6,7 +6,7 @@ import Header from '../_components/Header'
 import { Toaster } from '@/components/ui/toaster'
 import { TotalUsageContext } from '../(context)/TotalUsageContext'
 
-const DashboardLayout = ({
+const BillingLayout = ({
 	children,
 }: Readonly<{ children: React.ReactNode }>) => {
 	const [totalUsage, setTotalUsage] = useState<number>(0)
@@ -26,4 +26,4 @@ const DashboardLayout = ({
 	)
 }
 
-export default DashboardLayout
+export default BillingLayout

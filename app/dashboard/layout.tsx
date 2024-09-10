@@ -10,8 +10,16 @@ const DashboardLayout = ({
 	children,
 }: Readonly<{ children: React.ReactNode }>) => {
 	const [totalUsage, setTotalUsage] = useState<number>(0)
+	const [isAllowedToGenerate, setIsAllowedToGenerate] =
+		useState<boolean>(true)
 	return (
-		<TotalUsageContext.Provider value={{ totalUsage, setTotalUsage }}>
+		<TotalUsageContext.Provider
+			value={{
+				totalUsage,
+				setTotalUsage,
+				isAllowedToGenerate,
+				setIsAllowedToGenerate,
+			}}>
 			<div className='bg-slate-100 h-screen'>
 				<div className='md:w-64 hidden md:block fixed'>
 					<SideNav />

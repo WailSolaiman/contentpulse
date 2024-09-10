@@ -14,7 +14,7 @@ import { AiOutput } from '@/utils/schema'
 import { useUser } from '@clerk/nextjs'
 import moment from 'moment'
 import { TotalUsageContext } from '@/app/(context)/TotalUsageContext'
-import { useRouter } from 'next/router'
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
 
 interface PROPS {
 	params: {
@@ -27,8 +27,8 @@ const CreateNewContent = (props: PROPS) => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [aiOutput, setAiOutput] = useState<string>('')
 	const { user } = useUser()
-	const router = useRouter()
-	const { totalUsage, setTotalUsage } = useContext(TotalUsageContext)
+	const { totalUsage, isAllowedToGenerate, setIsAllowedToGenerate } =
+		useContext(TotalUsageContext)
 
 	const selectedTemplate: TEMPLATE | undefined = Templates.find(
 		(item) => item.slug == props.params['template-slug']
@@ -36,22 +36,23 @@ const CreateNewContent = (props: PROPS) => {
 
 	const generateAIContent = async (formData: any) => {
 		if (totalUsage >= 10000) {
-			router.push('/billing')
+			console.log('BIGGER, IM IN')
+			setIsAllowedToGenerate(false)
 			return
+		} else {
+			setLoading(true)
+			const selectedPrompt = selectedTemplate?.aiPrompt
+			const finalPrompt = JSON.stringify(formData) + ', ' + selectedPrompt
+			const result = await chatSession.sendMessage(finalPrompt)
+			setAiOutput(result?.response.text())
+			await saveInDB(
+				formData,
+				selectedTemplate?.name,
+				selectedTemplate?.slug,
+				result?.response.text()
+			)
+			setLoading(false)
 		}
-
-		setLoading(true)
-		const selectedPrompt = selectedTemplate?.aiPrompt
-		const finalPrompt = JSON.stringify(formData) + ', ' + selectedPrompt
-		const result = await chatSession.sendMessage(finalPrompt)
-		setAiOutput(result?.response.text())
-		await saveInDB(
-			formData,
-			selectedTemplate?.name,
-			selectedTemplate?.slug,
-			result?.response.text()
-		)
-		setLoading(false)
 	}
 
 	const saveInDB = async (
@@ -70,6 +71,21 @@ const CreateNewContent = (props: PROPS) => {
 		})
 
 		console.log(result)
+	}
+
+	if (!isAllowedToGenerate) {
+		return (
+			<div className='h-screen flex justify-center items-center '>
+				<Alert className='flex flex-col sm:w-10/12 md:w-6/12 shadow-sm bg-primary p-5'>
+					<AlertTitle className='text-white text-2xl'>
+						Not Enough Credit Points!
+					</AlertTitle>
+					<AlertDescription className='text-white'>
+						Please upgrade to continue using our awesome tools.
+					</AlertDescription>
+				</Alert>
+			</div>
+		)
 	}
 
 	return (

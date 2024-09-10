@@ -12,6 +12,7 @@ import {
 	TableRow,
 } from '@/components/ui/table'
 import { useToast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button'
 
 export interface HistoryData {
 	id: number
@@ -83,8 +84,8 @@ const History = () => {
 									{item.createdAt}
 								</TableCell>
 								<TableCell className='text-center'>
-									<button
-										className='text-primary font-bold'
+									<Button
+										variant={'link'}
 										type='button'
 										onClick={() => {
 											toast({
@@ -97,7 +98,7 @@ const History = () => {
 											)
 										}}>
 										Copy
-									</button>
+									</Button>
 								</TableCell>
 							</TableRow>
 						))}
